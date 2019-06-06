@@ -74,9 +74,8 @@ public class Scena extends Canvas implements Runnable {
 			while (!nit.isInterrupted()) {
 				synchronized(this) {
 					while(pauzirano) wait();
-				
-					trenutni.pomeri(Smer.DOLE);
 					proveri();
+					trenutni.pomeri(Smer.DOLE);
 				}
 				repaint();
 				Thread.sleep(tajmer);
@@ -146,7 +145,7 @@ public class Scena extends Canvas implements Runnable {
 			if (p.x == 0) return false;
 			try {
 				if (kvadrati[p.y/velicina][p.x/velicina-1] != null) return false;	
-			} catch(Exception e) { return false; }
+			} catch(IndexOutOfBoundsException e) { return true; } // element jos nije ceo na ekranu
 		}
 		
 		return true;
@@ -156,7 +155,7 @@ public class Scena extends Canvas implements Runnable {
 		for (Kvadrat kv : trenutni.kvadrati()) {
 			Point p = kv.dohvatiPoziciju();
 			
-			if (p.y + velicina >= getHeight()) { return false; }
+			if (p.y + velicina >= getHeight()) return false;
 			
 			for (int i = 0; i < r; i++) {
 				for (int j = 0; j < k; j++) {
@@ -179,7 +178,7 @@ public class Scena extends Canvas implements Runnable {
 			if (p.x+velicina == getWidth()) return false;
 			try {
 				if (kvadrati[p.y/velicina][p.x/velicina+1] != null) return false;	
-			} catch(Exception e) { return false; }
+			} catch(IndexOutOfBoundsException e) { return true; }  // element jos nije ceo na ekranu
 		}
 		
 		return true;
